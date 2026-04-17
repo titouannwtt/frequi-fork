@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { GridItemData } from '@/types';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const botStore = useBotStore();
 const layoutStore = useLayoutStore();
 const settingsStore = useSettingsStore();
@@ -85,58 +87,64 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :h="gridLayoutMultiPane.h"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Multi Pane">
+        <DraggableContainer>
+          <template #header>
+            <div class="flex items-center gap-1">
+              <i-mdi-view-grid />
+              <span>{{ t('trading.multiPane') }}</span>
+            </div>
+          </template>
           <div class="mt-1 flex justify-center">
             <BotControls class="mt-1 mb-2" />
           </div>
           <Tabs value="0" scrollable lazy>
             <TabList>
               <Tab value="0" severity="secondary">
-                <div title="Pairs combined">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Pairs combined</span
+                <div class="flex items-center gap-1" :title="t('trading.pairsCombined')">
+                  <i-mdi-currency-btc />
+                  <span v-if="settingsStore.multiPaneButtonsShowText"
+                    >{{ t('trading.pairsCombined') }}</span
                   >
-                  <i-mdi-view-list v-else />
                 </div>
               </Tab>
               <Tab value="1" severity="secondary">
-                <div title="General">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">General</span>
-                  <i-mdi-information v-else />
+                <div class="flex items-center gap-1" :title="t('trading.general')">
+                  <i-mdi-information />
+                  <span v-if="settingsStore.multiPaneButtonsShowText">{{ t('trading.general') }}</span>
                 </div>
               </Tab>
               <Tab value="2" severity="secondary">
-                <div title="Performance">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Performance</span
+                <div class="flex items-center gap-1" :title="t('trading.performance')">
+                  <i-mdi-chart-bar />
+                  <span v-if="settingsStore.multiPaneButtonsShowText"
+                    >{{ t('trading.performance') }}</span
                   >
-                  <i-mdi-chart-line v-else />
                 </div>
               </Tab>
               <Tab value="3" severity="secondary">
-                <div title="Balance">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Balance</span>
-                  <i-mdi-bank v-else />
+                <div class="flex items-center gap-1" :title="t('trading.balance')">
+                  <i-mdi-wallet />
+                  <span v-if="settingsStore.multiPaneButtonsShowText">{{ t('trading.balance') }}</span>
                 </div>
               </Tab>
               <Tab value="4" severity="secondary">
-                <div title="Time Breakdown">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1"
-                    >Time Breakdown</span
+                <div class="flex items-center gap-1" :title="t('trading.timeBreakdown')">
+                  <i-mdi-calendar-clock />
+                  <span v-if="settingsStore.multiPaneButtonsShowText"
+                    >{{ t('trading.timeBreakdown') }}</span
                   >
-                  <i-mdi-folder-clock v-else />
                 </div>
               </Tab>
               <Tab value="5" severity="secondary">
-                <div title="Pairlist">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pairlist</span>
-                  <i-mdi-format-list-group v-else />
+                <div class="flex items-center gap-1" :title="t('trading.pairlist')">
+                  <i-mdi-format-list-bulleted />
+                  <span v-if="settingsStore.multiPaneButtonsShowText">{{ t('trading.pairlist') }}</span>
                 </div>
               </Tab>
               <Tab value="6" severity="secondary">
-                <div title="Pair Locks">
-                  <span v-if="settingsStore.multiPaneButtonsShowText" class="ms-1">Pair Locks</span>
-                  <i-mdi-lock-alert v-else />
+                <div class="flex items-center gap-1" :title="t('trading.pairLocks')">
+                  <i-mdi-lock />
+                  <span v-if="settingsStore.multiPaneButtonsShowText">{{ t('trading.pairLocks') }}</span>
                 </div>
               </Tab>
             </TabList>
@@ -181,13 +189,19 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :h="gridLayoutOpenTrades.h"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Open Trades">
+        <DraggableContainer>
+          <template #header>
+            <div class="flex items-center gap-1">
+              <i-mdi-swap-horizontal />
+              <span>{{ t('trading.openTrades') }}</span>
+            </div>
+          </template>
           <TradeList
             class="open-trades"
             :trades="botStore.activeBot.openTrades"
-            title="Open trades"
+            :title="t('trading.openTradesTitle')"
             :active-trades="true"
-            empty-text="Currently no open trades."
+            :empty-text="t('tradeList.currentlyNoOpen')"
           />
         </DraggableContainer>
       </GridItem>
@@ -201,13 +215,19 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :h="gridLayoutTradeHistory.h"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Closed Trades">
+        <DraggableContainer>
+          <template #header>
+            <div class="flex items-center gap-1">
+              <i-mdi-history />
+              <span>{{ t('trading.closedTrades') }}</span>
+            </div>
+          </template>
           <TradeList
             class="trade-history"
             :trades="botStore.activeBot.closedTrades"
-            title="Trade history"
+            :title="t('trading.tradeHistory')"
             :show-filter="true"
-            empty-text="No closed trades so far."
+            :empty-text="t('tradeList.noClosedTrades')"
           />
         </DraggableContainer>
       </GridItem>
@@ -226,7 +246,13 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :min-h="4"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Trade Detail">
+        <DraggableContainer>
+          <template #header>
+            <div class="flex items-center gap-1">
+              <i-mdi-file-document />
+              <span>{{ t('trading.tradeDetail') }}</span>
+            </div>
+          </template>
           <TradeDetail
             :trade="botStore.activeBot.tradeDetail"
             :stake-currency="botStore.activeBot.stakeCurrency"
@@ -244,7 +270,13 @@ function refreshOHLCV(pair: string, columns: string[]) {
         :min-h="6"
         drag-allow-from=".drag-header"
       >
-        <DraggableContainer header="Chart">
+        <DraggableContainer>
+          <template #header>
+            <div class="flex items-center gap-1">
+              <i-mdi-chart-line />
+              <span>{{ t('trading.chart') }}</span>
+            </div>
+          </template>
           <CandleChartContainer
             :available-pairs="botStore.activeBot.whitelist"
             :historic-view="!!false"

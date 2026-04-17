@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { ChartSliderPosition, PairHistory, Trade } from '@/types';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = withDefaults(
   defineProps<{
@@ -129,6 +132,18 @@ watch(
   },
 );
 
+const filteredTrades = computed(() => {
+  if (!settingsStore.hideSimultaneousEntryExit) {
+    return props.trades;
+  }
+  // Filter out trades where entry and exit happen on the same candle
+  return props.trades.filter((trade) => {
+    if (!trade.close_timestamp || !trade.open_timestamp) return true;
+    // If open and close are on the same candle (same timestamp), hide this trade
+    return trade.close_timestamp !== trade.open_timestamp;
+  });
+});
+
 const singlePairSelection = computed({
   get() {
     return botStore.activeBot.plotMultiPairs[0] || '';
@@ -150,7 +165,7 @@ const singlePairSelection = computed({
           class="w-80"
           :options="availablePairs"
           optionlabel=""
-          placeholder="Select pairs to plot"
+          :placeholder="t('charts.selectPairs')"
           size="small"
           filter
         >
@@ -167,7 +182,7 @@ const singlePairSelection = computed({
         </Select>
 
         <Button
-          title="Refresh chart"
+          :title="t('charts.refreshChart')"
           severity="secondary"
           :disabled="botStore.activeBot.plotMultiPairs.length == 0"
           size="small"
@@ -176,14 +191,17 @@ const singlePairSelection = computed({
           <i-mdi-refresh />
         </Button>
         <BaseCheckbox v-model="settingsStore.multiPairSelection">
-          <span class="text-nowrap">Multi pair</span>
+          <span class="text-nowrap">{{ t('charts.multiPair') }}</span>
         </BaseCheckbox>
         <div class="ms-auto flex items-center gap-2">
+          <BaseCheckbox v-model="settingsStore.hideSimultaneousEntryExit">
+            <span class="text-nowrap">{{ t('charts.hideSimultaneous') }}</span>
+          </BaseCheckbox>
           <BaseCheckbox v-model="settingsStore.showMarkArea">
-            <span class="text-nowrap">Show Chart Areas</span>
+            <span class="text-nowrap">{{ t('charts.showChartAreas') }}</span>
           </BaseCheckbox>
           <BaseCheckbox v-model="settingsStore.useHeikinAshiCandles">
-            <span class="text-nowrap">Heikin Ashi</span>
+            <span class="text-nowrap">{{ t('charts.heikinAshi') }}</span>
           </BaseCheckbox>
 
           <PlotConfigSelect></PlotConfigSelect>
@@ -191,7 +209,7 @@ const singlePairSelection = computed({
           <div class="me-0 md:me-1">
             <Button
               size="small"
-              title="Plot configurator"
+              :title="t('charts.plotConfigurator')"
               severity="secondary"
               @click="showConfigurator"
             >
@@ -216,7 +234,7 @@ const singlePairSelection = computed({
           :pair="pair"
           :historic-view="botStore.activeBot.isWebserverMode"
           :timeframe="timeframe"
-          :trades="props.trades"
+          :trades="filteredTrades"
           :slider-position="props.sliderPosition"
           :is-single-pair-view="isSinglePairView"
           @refresh-data="refresh()"
@@ -224,13 +242,13 @@ const singlePairSelection = computed({
         </SingleCandleChartContainer>
       </div>
       <div v-else class="flex flex-col items-center justify-center h-full w-full">
-        <span class="text-2xl font-semibold">No pair selected</span>
+        <span class="text-2xl font-semibold">{{ t('charts.noPairSelected') }}</span>
       </div>
     </div>
     <Dialog
       id="plotConfiguratorModal"
       v-model:visible="showPlotConfigModal"
-      header="Plot Configurator"
+      :header="t('charts.plotConfigurator')"
       ok-only
       hide-backdrop
     >

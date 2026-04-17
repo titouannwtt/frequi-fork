@@ -39,6 +39,8 @@ export interface BalanceInterface {
   /** Change between starting capital and current value in fiat */
   starting_capital_fiat_ratio: number;
   starting_capital_fiat_pct: number;
+  /** Total amount withdrawn from bot profits */
+  capital_withdrawal?: number;
 }
 
 export interface BalanceValues {

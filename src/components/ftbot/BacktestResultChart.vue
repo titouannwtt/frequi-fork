@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { ChartSliderPosition, StrategyBacktestResult, Trade } from '@/types';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
   timeframe: string;
@@ -112,7 +115,7 @@ onMounted(() => {
         />
       </Transition>
     </div>
-    <DraggableContainer header="Single trades" class="row mt-2 w-full">
+    <DraggableContainer :header="t('backtest.singleTrades')" class="row mt-2 w-full">
       <TradeList
         class="row trade-history mt-2 w-full"
         :trades="backtestResult.trades"

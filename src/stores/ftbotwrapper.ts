@@ -37,6 +37,7 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       refreshing: false,
       refreshInterval: null as number | null,
       refreshIntervalSlow: null as number | null,
+      tradesRefreshInterval: null as number | null,
       botStores: {} as SubStores,
     };
   },
@@ -294,20 +295,21 @@ export const useBotStore = defineStore('ftbot-wrapper', {
     },
     async allRefreshFrequent(forceUpdate = false) {
       const updates: Promise<unknown>[] = [];
-      this.allBotStores.forEach(async (e) => {
+      for (const e of this.allBotStores) {
         if (e.refreshNow && e.botStatusAvailable && (this.globalAutoRefresh || forceUpdate)) {
           updates.push(e.refreshFrequent());
         }
-      });
+      }
       await Promise.all(updates);
-      return Promise.resolve();
     },
     async allRefreshSlow(forceUpdate = false) {
-      this.allBotStores.forEach(async (e) => {
+      const updates: Promise<unknown>[] = [];
+      for (const e of this.allBotStores) {
         if (e.refreshNow && (this.globalAutoRefresh || forceUpdate)) {
-          await e.refreshSlow(forceUpdate);
+          updates.push(e.refreshSlow(forceUpdate));
         }
-      });
+      }
+      await Promise.all(updates);
     },
     async allRefreshFull() {
       if (this.refreshing) {
@@ -353,6 +355,31 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         }, 60000);
         this.refreshIntervalSlow = refreshIntervalSlow;
       }
+      this.startTradesBackgroundFetch();
+    },
+    startTradesBackgroundFetch() {
+      if (this.tradesRefreshInterval) {
+        return;
+      }
+      // Fetch trades for all online bots immediately
+      this.fetchAllBotsTrades();
+      // Then every 5 minutes
+      this.tradesRefreshInterval = window.setInterval(() => {
+        this.fetchAllBotsTrades();
+      }, 5 * 60 * 1000);
+    },
+    async fetchAllBotsTrades() {
+      const updates: Promise<void>[] = [];
+      for (const bot of Object.values(this.botStores)) {
+        if (bot.isBotOnline && bot.isBotLoggedIn) {
+          updates.push(
+            bot.getTrades().catch(() => {
+              // Ignore errors for individual bots
+            }),
+          );
+        }
+      }
+      await Promise.all(updates);
     },
     stopRefresh() {
       console.log('Stopping automatic refresh.');
@@ -363,6 +390,10 @@ export const useBotStore = defineStore('ftbot-wrapper', {
       if (this.refreshIntervalSlow) {
         window.clearInterval(this.refreshIntervalSlow);
         this.refreshIntervalSlow = null;
+      }
+      if (this.tradesRefreshInterval) {
+        window.clearInterval(this.tradesRefreshInterval);
+        this.tradesRefreshInterval = null;
       }
     },
     async pingAll() {
@@ -376,14 +407,16 @@ export const useBotStore = defineStore('ftbot-wrapper', {
         }),
       );
     },
-    allGetState() {
-      Object.values(this.botStores).map(async (v) => {
-        try {
-          await v.getState();
-        } catch {
-          // pass
-        }
-      });
+    async allGetState() {
+      await Promise.all(
+        Object.values(this.botStores).map(async (v) => {
+          try {
+            await v.getState();
+          } catch {
+            // pass
+          }
+        }),
+      );
     },
     async allGetDaily(payload: TimeSummaryPayload) {
       const updates: Promise<TimeSummaryReturnValue>[] = [];
@@ -433,6 +466,24 @@ export const useBotStore = defineStore('ftbot-wrapper', {
           bot.isBotOnline &&
           ((bot.botState.dry_run && state === 'dry') || (!bot.botState.dry_run && state === 'live'))
         ) {
+          bot.isSelected = true;
+        } else {
+          bot.isSelected = false;
+        }
+      }
+    },
+    toggleBotsByExchange(exchange: string) {
+      for (const bot of Object.values(this.botStores)) {
+        if (bot.botState.exchange?.toLowerCase() === exchange.toLowerCase()) {
+          bot.isSelected = true;
+        } else {
+          bot.isSelected = false;
+        }
+      }
+    },
+    toggleBotsByStakeCurrency(currency: string) {
+      for (const bot of Object.values(this.botStores)) {
+        if (bot.botState.stake_currency?.toLowerCase() === currency.toLowerCase()) {
           bot.isSelected = true;
         } else {
           bot.isSelected = false;

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const botStore = useBotStore();
 const autoRefreshLoc = computed({
   get() {
@@ -12,13 +15,13 @@ const autoRefreshLoc = computed({
 
 <template>
   <div class="flex items-center ms-2">
-    <BaseCheckbox v-model="autoRefreshLoc" size="small" title="Auto Refresh" />
+    <BaseCheckbox v-model="autoRefreshLoc" size="small" :title="t('general.autoRefresh')" />
     <Button
       class="m-1"
       severity="contrast"
       variant="outlined"
       size="small"
-      title="Auto Refresh all bots now"
+      :title="t('general.autoRefreshAll')"
       @click="botStore.allRefreshFull"
     >
       <template #icon>

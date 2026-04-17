@@ -51,6 +51,7 @@ export function useLoginInfo(botId: string) {
     set: (val) => (currentInfo.value.autoRefresh = val),
   });
   const accessToken = computed(() => currentInfo.value.accessToken);
+  const botName = computed(() => currentInfo.value.botName);
 
   const baseUrl = computed<string>(() => {
     const baseURL = currentInfo.value.apiUrl;
@@ -170,6 +171,7 @@ export function useLoginInfo(botId: string) {
     getLoginInfo,
     autoRefresh,
     accessToken,
+    botName,
     logout,
     login,
     refreshToken,

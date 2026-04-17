@@ -139,3 +139,40 @@ html {
     background-color: unset !important;
 }
 
+/* Print stylesheet for PDF export */
+@media print {
+  header, .navbar-glass, nav, .drag-header button, .no-print {
+    display: none !important;
+  }
+  body {
+    zoom: 0.6;
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .p-datatable {
+    font-size: 8px !important;
+  }
+  .p-datatable th, .p-datatable td {
+    padding: 2px 4px !important;
+  }
+  .vue-grid-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* Remove scrollbars */
+  * {
+    overflow: visible !important;
+  }
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+}
+
+/* Hide PrimeVue's native popover arrow — we use Floating UI's arrow instead */
+.p-popover::before,
+.p-popover::after {
+  display: none !important;
+}
+

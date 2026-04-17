@@ -79,6 +79,7 @@ export function createBotSubStore(botId: string, botName: string) {
         ping: '',
         botStatusAvailable: false,
         isBotOnline: false,
+        lastSeenOnline: 0 as number,
         isBotLoggedIn: true,
         autoRefresh: false,
         refreshing: false,
@@ -88,6 +89,8 @@ export function createBotSubStore(botId: string, botName: string) {
         trades: [] as ClosedTrade[],
         openTrades: [] as Trade[],
         tradeCount: 0,
+        closedTradesLoaded: false,
+        closedTradesLoading: false,
         performanceStats: [] as PerformanceEntry[],
         entryStats: [] as EntryStats[],
         exitStats: [] as ExitStats[],
@@ -177,7 +180,7 @@ export function createBotSubStore(botId: string, botName: string) {
         }
         return false;
       },
-      uiBotName: (state) => botName || state.botState?.bot_name || 'freqtrade',
+      uiBotName: (state) => loginInfo.botName.value || botName || state.botState?.bot_name || 'freqtrade',
       botName: (state) => state.botState?.bot_name || 'freqtrade',
       botId: () => botId,
       allTrades: (state) => [...state.openTrades, ...state.trades] as Trade[],
@@ -226,6 +229,9 @@ export function createBotSubStore(botId: string, botName: string) {
           this.refreshRequired = true;
           this.refreshSlow(true);
         }
+        if (isBotOnline) {
+          this.lastSeenOnline = Date.now();
+        }
         this.isBotOnline = isBotOnline;
       },
       async refreshSlow(forceUpdate = false) {
@@ -266,6 +272,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getTrades() {
         try {
+          this.closedTradesLoading = true;
           let totalTrades = 0;
           const pageLength = 500;
           const fetchTrades = async (limit: number, offset: number) => {
@@ -299,6 +306,7 @@ export function createBotSubStore(botId: string, botName: string) {
             }));
             this.trades = trades;
             this.tradeCount = tradesCount;
+            this.closedTradesLoaded = true;
           }
           return Promise.resolve();
         } catch (error) {
@@ -306,6 +314,8 @@ export function createBotSubStore(botId: string, botName: string) {
             console.error(error.response);
           }
           return Promise.reject(error);
+        } finally {
+          this.closedTradesLoading = false;
         }
       },
       async getOpenTrades() {
@@ -696,7 +706,7 @@ export function createBotSubStore(botId: string, botName: string) {
       },
       async getLogs() {
         try {
-          const { data } = await api.get('/logs');
+          const { data } = await api.get('/logs', { params: { limit: 500 } });
           this.lastLogs = data.logs;
           return Promise.resolve(data);
         } catch (error) {

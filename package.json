@@ -17,6 +17,7 @@
     "test:e2e-firefox": "playwright test --project=firefox"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.7.6",
     "@noction/vue-draggable-grid": "1.9.16",
     "@primeuix/themes": "^2.0.3",
     "@vuepic/vue-datepicker": "^12.1.0",
@@ -28,6 +29,7 @@
     "deepmerge": "^4.3.1",
     "echarts": "^6.0.0",
     "favico.js": "^0.3.10",
+    "html-to-image": "^1.11.13",
     "humanize-duration": "^3.33.2",
     "pinia": "3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
@@ -35,6 +37,7 @@
     "sortablejs": "^1.15.7",
     "vue": "^3.5.30",
     "vue-echarts": "^8.0.1",
+    "vue-i18n": "^11.3.0",
     "vue-router": "^5.0.4"
   },
   "devDependencies": {

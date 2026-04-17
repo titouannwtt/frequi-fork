@@ -29,3 +29,18 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# === Fork custom: never commit these ===
+
+# Local docs and notes (only README.md is shared)
+*.md
+!README.md
+
+# Extra safety for secrets
+.env
+.env.*
+*access*.json
+*credentials*
+*secret*
+*.key
+*.pem

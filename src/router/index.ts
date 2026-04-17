@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: 'Freqtrade Dashboard',
-    component: () => import('@/views/DashboardView.vue'),
+    component: () => import('@/views/DashboardViewCustom.vue'),
   },
   {
     path: '/balance',
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/settings',
     name: 'Freqtrade Settings',
-    component: () => import('@/views/SettingsView.vue'),
+    component: () => import('@/views/SettingsViewCustom.vue'),
   },
   {
     path: '/login',

@@ -50,6 +50,11 @@ const gridLayoutAllClosedTrades = computed((): GridItemData => {
 const gridLayoutCumChart = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.cumChartChart);
 });
+
+const gridLayoutWalletHistory = computed((): GridItemData => {
+  return findGridLayout(gridLayoutData.value, DashboardLayout.walletHistoryChart);
+});
+
 const gridLayoutProfitDistribution = computed((): GridItemData => {
   return findGridLayout(gridLayoutData.value, DashboardLayout.profitDistributionChart);
 });
@@ -161,6 +166,21 @@ onMounted(async () => {
             :open-trades="botStore.allOpenTradesSelectedBots"
             :show-title="false"
           />
+        </DraggableContainer>
+      </GridItem>
+      <GridItem
+        v-bind="gridItemProps"
+        :i="gridLayoutWalletHistory.i"
+        :x="gridLayoutWalletHistory.x"
+        :y="gridLayoutWalletHistory.y"
+        :w="gridLayoutWalletHistory.w"
+        :h="gridLayoutWalletHistory.h"
+        :min-w="3"
+        :min-h="4"
+        drag-allow-from=".drag-header"
+      >
+        <DraggableContainer header="Wallet History">
+          <WalletHistoryChart :wallet-data="botStore.allBalanceHistory" :show-title="false" />
         </DraggableContainer>
       </GridItem>
       <GridItem

@@ -16,6 +16,12 @@ export enum DashboardLayout {
   allClosedTrades = 4,
   profitDistributionChart = 5,
   tradesLogChart = 6,
+  activityTimeline = 7,
+  marketPulse = 8,
+  performanceHeatmap = 9,
+  riskOverview = 10,
+  stressTest = 11,
+  logConsole = 12,
 }
 
 // Define default layouts
@@ -43,7 +49,13 @@ const DEFAULT_DASHBOARD_LAYOUT: GridItemData[] = [
   { i: DashboardLayout.cumChartChart, x: 8, y: 6, w: 4, h: 6 },
   { i: DashboardLayout.allClosedTrades, x: 0, y: 12, w: 8, h: 6 },
   { i: DashboardLayout.profitDistributionChart, x: 8, y: 12, w: 4, h: 6 },
-  { i: DashboardLayout.tradesLogChart, x: 0, y: 18, w: 12, h: 4 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 18, w: 8, h: 5 },
+  { i: DashboardLayout.activityTimeline, x: 8, y: 18, w: 4, h: 5 },
+  { i: DashboardLayout.marketPulse, x: 0, y: 23, w: 4, h: 5 },
+  { i: DashboardLayout.performanceHeatmap, x: 4, y: 23, w: 4, h: 5 },
+  { i: DashboardLayout.riskOverview, x: 8, y: 23, w: 4, h: 5 },
+  { i: DashboardLayout.stressTest, x: 0, y: 28, w: 4, h: 6 },
+  { i: DashboardLayout.logConsole, x: 4, y: 28, w: 8, h: 6 },
 ];
 
 const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
@@ -52,8 +64,14 @@ const DEFAULT_DASHBOARD_LAYOUT_SM: GridItemData[] = [
   { i: DashboardLayout.dailyChart, x: 0, y: 14, w: 12, h: 6 },
   { i: DashboardLayout.cumChartChart, x: 0, y: 20, w: 12, h: 6 },
   { i: DashboardLayout.profitDistributionChart, x: 0, y: 26, w: 12, h: 6 },
-  { i: DashboardLayout.tradesLogChart, x: 0, y: 32, w: 12, h: 4 },
-  { i: DashboardLayout.allClosedTrades, x: 0, y: 36, w: 12, h: 8 },
+  { i: DashboardLayout.tradesLogChart, x: 0, y: 32, w: 12, h: 5 },
+  { i: DashboardLayout.allClosedTrades, x: 0, y: 37, w: 12, h: 8 },
+  { i: DashboardLayout.activityTimeline, x: 0, y: 45, w: 12, h: 4 },
+  { i: DashboardLayout.marketPulse, x: 0, y: 49, w: 12, h: 5 },
+  { i: DashboardLayout.performanceHeatmap, x: 0, y: 54, w: 12, h: 5 },
+  { i: DashboardLayout.riskOverview, x: 0, y: 59, w: 12, h: 5 },
+  { i: DashboardLayout.stressTest, x: 0, y: 64, w: 12, h: 6 },
+  { i: DashboardLayout.logConsole, x: 0, y: 70, w: 12, h: 6 },
 ];
 
 const STORE_LAYOUTS = 'ftLayoutSettings';
