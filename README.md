@@ -6,7 +6,9 @@ A fork of [freqtrade/frequi](https://github.com/freqtrade/frequi) with a near-co
 
 Upstream FreqUI is great as a general-purpose monitoring tool, but it stops short of surfacing the information I actually look at every day when running multiple bots in parallel: per-bot risk exposure, DCA state, liquidation distance, cross-bot benchmarks, market context, alert history, projected monthly/yearly profit, and so on. This fork fills that gap.
 
-> Screenshots will be added progressively — the UI is under active iteration.
+<p align="center">
+  <img src=".readme_illustrations/dashboard-overview.png" alt="FreqUI fork — dashboard overview with Bot Comparison, Profit & Benchmarks and Log Console" width="900">
+</p>
 
 ---
 
@@ -35,20 +37,65 @@ Concrete inventory (148 files changed, +38 413 / -1 676 lines vs. `freqtrade/fre
 - **Custom Dashboard** (`DashboardViewCustom.vue`) — new layout with drag-and-droppable enhanced widgets.
 - **Custom Settings view** (`SettingsViewCustom.vue`) — glassmorphism redesign, grouped into cards (connections, notifications, appearance, About).
 - **Bot Comparison** — ~4500 lines of new code on top of the upstream list: custom columns, tags, filters, sort, groups, 13 alert types, custom tags, per-column popovers, drag ordering, CSV export, keyboard shortcuts.
+
+<p align="center">
+  <img src=".readme_illustrations/bot-comparison-columns.png" alt="Visible columns picker" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-sort.png" alt="Sort by picker" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-filter.png" alt="Filters" width="270">
+</p>
+<p align="center">
+  <img src=".readme_illustrations/bot-comparison-alerts.png" alt="Alert settings (13 alert types)" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-groups.png" alt="Bot groups / subfolders" width="350">
+</p>
+
 - **Market Pulse** — BTC/ETH tracker, Fear & Greed index, 24h market performance.
+
+<p align="center"><img src=".readme_illustrations/widget-market-pulse.png" alt="Market Pulse widget" width="650"></p>
+
 - **Activity Timeline** — rich event timeline (entries, exits, DCA, alerts, errors) with grouping and filters.
+
+<p align="center"><img src=".readme_illustrations/widget-activity-timeline.png" alt="Activity Timeline widget" width="650"></p>
+
 - **Performance Heatmap** — calendar heatmap, daily / weekly / monthly.
+
+<p align="center"><img src=".readme_illustrations/widget-performance-heatmap.png" alt="Performance Heatmap widget" width="650"></p>
+
 - **Risk Overview** — net & gross exposure, drawdown gauge, open-risk summary.
+
+<p align="center"><img src=".readme_illustrations/widget-risk-overview.png" alt="Risk Overview widget" width="650"></p>
+
 - **Stress Test card** — shock scenarios from -50% to +50%, liquidation capping.
+
+<p align="center"><img src=".readme_illustrations/widget-stress-test.png" alt="Stress Test widget" width="650"></p>
+
 - **Enhanced Trades Log** — compact, filterable journal.
-- **Enhanced Log Viewer** — coloured logs, heartbeat / WebSocket filters, 500-line buffer.
+
+<p align="center"><img src=".readme_illustrations/widget-trades-log.png" alt="Trades Log widget" width="650"></p>
+
+- **Enhanced Log Viewer** — coloured logs, heartbeat / WebSocket filters, 500-line buffer. Also a full refresh of the Logs page.
+
+<p align="center"><img src=".readme_illustrations/widget-log-console.png" alt="Log console widget" width="750"></p>
+<p align="center"><img src=".readme_illustrations/logs-page-redesign.png" alt="Logs page — full redesign" width="700"></p>
 
 #### Enhanced versions of existing widgets
 
 Drop-in replacements that keep the same purpose but add drill-downs, tabs, and stats:
 
 - `ProfitBenchmarkChart.vue` — unifies Profit + BTC/ETH/SOL benchmarks (via CoinGecko).
+
+<p align="center">
+  <img src=".readme_illustrations/widget-profit-benchmarks-combined.png" alt="Profit &amp; Benchmarks — combined view with BTC overlay" width="430">
+  &nbsp;
+  <img src=".readme_illustrations/widget-profit-benchmarks-per-bot.png" alt="Profit &amp; Benchmarks — per-bot view" width="430">
+</p>
+
 - `ProfitDistributionEnhanced.vue` — 5 tabs, filters, ECharts.
+
+<p align="center"><img src=".readme_illustrations/widget-profit-distribution.png" alt="Profit Distribution widget" width="650"></p>
+
 - `ProfitOverTimeEnhanced.vue` — 3 modes (cumulative / per-trade / rolling), timeframes, stats.
 - `CumulativeProfitEnhanced.vue` — 4 tabs, zoom, running stats.
 - `OpenTradesEnhanced.vue` / `ClosedTradesEnhanced.vue` — custom columns, exit-reason badges, pagination, popovers.
@@ -63,6 +110,29 @@ Each of these replaces a plain-text metric with a detailed glassmorphism card:
 - Bot / Exchange / Currency info cards: equity curve, fees, KYC flags, token backing & risks.
 - Stoploss chart popover: mini SVG price chart with 5 000 candles, SL & liquidation lines.
 - Alert detail card grouped by position.
+
+<table>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-bot-info.png" alt="Bot info popover" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-exchange-info.png" alt="Exchange info popover" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-trade-overview.png" alt="Trade overview popover" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-open-positions.png" alt="All open positions popover" width="240"></td>
+    <td align="center"><img src=".readme_illustrations/popover-dca-escalations.png" alt="DCA &amp; cost escalations popover" width="220"></td>
+    <td align="center"><img src=".readme_illustrations/popover-periodic-profit.png" alt="Periodic profit analysis popover" width="240"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-closed-profit.png" alt="Closed profits (all bots) popover" width="280"></td>
+    <td align="center"><img src=".readme_illustrations/popover-open-profit.png" alt="Open profit (all bots) popover" width="280"></td>
+    <td align="center"><img src=".readme_illustrations/popover-win-loss.png" alt="Global win/loss popover" width="260"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-exit-reasons.png" alt="Exit reason distribution popover" width="240"></td>
+    <td align="center"><img src=".readme_illustrations/popover-price-levels.png" alt="Price levels &amp; zones popover" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-trade-duration.png" alt="Trade duration vs bot history popover" width="260"></td>
+  </tr>
+</table>
 
 #### New composables & stores
 
@@ -188,20 +258,65 @@ Inventaire concret (148 fichiers modifiés, +38 413 / -1 676 lignes vs. `freqtra
 - **Dashboard custom** (`DashboardViewCustom.vue`) — nouveau layout, widgets enhanced réorganisables par drag & drop.
 - **Vue Paramètres custom** (`SettingsViewCustom.vue`) — refonte glassmorphism, sections en cartes (connexions, notifications, apparence, À propos).
 - **Comparaison de bots** — ~4 500 lignes ajoutées : colonnes custom, tags, filtres, tri, groupes, 13 types d'alertes, popovers par colonne, ré-ordonnancement, export CSV, raccourcis clavier.
+
+<p align="center">
+  <img src=".readme_illustrations/bot-comparison-columns.png" alt="Sélecteur de colonnes visibles" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-sort.png" alt="Tri par colonne" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-filter.png" alt="Filtres" width="270">
+</p>
+<p align="center">
+  <img src=".readme_illustrations/bot-comparison-alerts.png" alt="Paramètres d'alertes (13 types)" width="270">
+  &nbsp;
+  <img src=".readme_illustrations/bot-comparison-groups.png" alt="Groupes de bots / sous-dossiers" width="350">
+</p>
+
 - **Market Pulse** — suivi BTC / ETH, Fear & Greed, performance marché 24 h.
+
+<p align="center"><img src=".readme_illustrations/widget-market-pulse.png" alt="Widget Market Pulse" width="650"></p>
+
 - **Activity Timeline** — timeline événementielle (entrées, sorties, DCA, alertes, erreurs) avec filtres et regroupement.
+
+<p align="center"><img src=".readme_illustrations/widget-activity-timeline.png" alt="Widget Activity Timeline" width="650"></p>
+
 - **Heatmap de performance** — heatmap calendrier (jour / semaine / mois).
+
+<p align="center"><img src=".readme_illustrations/widget-performance-heatmap.png" alt="Widget Performance Heatmap" width="650"></p>
+
 - **Risk Overview** — exposition nette & brute, jauge de drawdown, résumé risque ouvert.
+
+<p align="center"><img src=".readme_illustrations/widget-risk-overview.png" alt="Widget Risk Overview" width="650"></p>
+
 - **Stress Test** — scénarios de choc de -50 % à +50 %, liquidation plafonnée.
+
+<p align="center"><img src=".readme_illustrations/widget-stress-test.png" alt="Widget Stress Test" width="650"></p>
+
 - **Trades Log enhanced** — journal compact filtrable.
-- **Log Viewer enhanced** — logs colorés, filtres heartbeat / WebSocket, buffer de 500 lignes.
+
+<p align="center"><img src=".readme_illustrations/widget-trades-log.png" alt="Widget Trades Log" width="650"></p>
+
+- **Log Viewer enhanced** — logs colorés, filtres heartbeat / WebSocket, buffer de 500 lignes. Également une refonte complète de la page Logs.
+
+<p align="center"><img src=".readme_illustrations/widget-log-console.png" alt="Widget Log Console" width="750"></p>
+<p align="center"><img src=".readme_illustrations/logs-page-redesign.png" alt="Page Logs — refonte complète" width="700"></p>
 
 #### Versions améliorées des widgets existants
 
 Remplacements drop-in, même rôle mais avec drill-down, onglets et statistiques :
 
 - `ProfitBenchmarkChart.vue` — unifie Profit + benchmarks BTC/ETH/SOL (via CoinGecko).
+
+<p align="center">
+  <img src=".readme_illustrations/widget-profit-benchmarks-combined.png" alt="Profit &amp; Benchmarks — vue combinée avec courbe BTC" width="430">
+  &nbsp;
+  <img src=".readme_illustrations/widget-profit-benchmarks-per-bot.png" alt="Profit &amp; Benchmarks — vue par bot" width="430">
+</p>
+
 - `ProfitDistributionEnhanced.vue` — 5 onglets, filtres, ECharts.
+
+<p align="center"><img src=".readme_illustrations/widget-profit-distribution.png" alt="Widget Profit Distribution" width="650"></p>
+
 - `ProfitOverTimeEnhanced.vue` — 3 modes (cumulatif / par trade / glissant), timeframes, stats.
 - `CumulativeProfitEnhanced.vue` — 4 onglets, zoom, stats live.
 - `OpenTradesEnhanced.vue` / `ClosedTradesEnhanced.vue` — colonnes custom, badges exit reason, pagination, popovers.
@@ -216,6 +331,29 @@ Chaque métrique devient cliquable et s'ouvre en carte détaillée :
 - Fiches Bot / Exchange / Currency : courbe d'equity, frais, KYC, backing et risques des tokens.
 - Popover stoploss : mini graphique prix SVG (5 000 bougies, SL et liquidation).
 - Carte d'alertes détaillée groupée par position.
+
+<table>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-bot-info.png" alt="Popover info bot" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-exchange-info.png" alt="Popover info exchange" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-trade-overview.png" alt="Popover vue d'ensemble du trade" width="220"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-open-positions.png" alt="Popover toutes positions ouvertes" width="240"></td>
+    <td align="center"><img src=".readme_illustrations/popover-dca-escalations.png" alt="Popover DCA &amp; escalades de coût" width="220"></td>
+    <td align="center"><img src=".readme_illustrations/popover-periodic-profit.png" alt="Popover analyse profit périodique" width="240"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-closed-profit.png" alt="Popover profits fermés (tous bots)" width="280"></td>
+    <td align="center"><img src=".readme_illustrations/popover-open-profit.png" alt="Popover profit ouvert (tous bots)" width="280"></td>
+    <td align="center"><img src=".readme_illustrations/popover-win-loss.png" alt="Popover win/loss global" width="260"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src=".readme_illustrations/popover-exit-reasons.png" alt="Popover distribution des exit reasons" width="240"></td>
+    <td align="center"><img src=".readme_illustrations/popover-price-levels.png" alt="Popover niveaux de prix &amp; zones" width="260"></td>
+    <td align="center"><img src=".readme_illustrations/popover-trade-duration.png" alt="Popover durée du trade vs historique du bot" width="260"></td>
+  </tr>
+</table>
 
 #### Nouveaux composables & stores
 
